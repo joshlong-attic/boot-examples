@@ -1,0 +1,12 @@
+<html>
+
+<title>
+    Hello, world
+</title>
+
+<body>
+
+    there are  $bookings.size() bookings.
+
+</body>
+</html>

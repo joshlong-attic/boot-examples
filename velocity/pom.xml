@@ -4,24 +4,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.demo</groupId>
-    <artifactId>rest-and-mvc</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-
-     <packaging>war</packaging>
-    <parent>
+    <artifactId>boot-velocity</artifactId>
+ 
+       <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>0.5.0.BUILD-SNAPSHOT</version>
+        <version>0.5.0.M6</version>
     </parent>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf-spring3</artifactId>
-        </dependency>
+     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+             <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -36,13 +35,19 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
     </dependencies>
 
     <properties>
+      <spring.version>4.0.0.RELEASE</spring.version>
         <start-class>demo.Application</start-class>
     </properties>
 
-    <!--<build>
+     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -50,7 +55,7 @@
             </plugin>
         </plugins>
     </build>
--->
+ 
     <repositories>
         <repository>
             <id>spring-snapshots</id>

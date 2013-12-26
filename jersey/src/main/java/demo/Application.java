@@ -22,8 +22,7 @@ public class Application extends SpringBootServletInitializer {
     @Bean
     public ServletRegistrationBean jerseyServlet() {
         ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/*");
-        //registration.addInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, ClassUtils.getPackageName(Application.class));
-        registration.addInitParameter(ServletContainer.APPLICATION_CONFIG_CLASS, JaxRsApplication.class.getName());
+         registration.addInitParameter(ServletContainer.APPLICATION_CONFIG_CLASS, JaxRsApplication.class.getName());
         return registration;
     }
 
