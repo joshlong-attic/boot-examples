@@ -50,6 +50,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		XAuthTokenFilter customFilter = new XAuthTokenFilter(userDetailsServiceBean());
 		
+		
+		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
 		http.authorizeRequests().antMatchers("/" + GreetingController.GREETING_NAME + "/**").hasRole(CustomUserDetailsService.ROLE_USER);
