@@ -119,7 +119,7 @@ class CustomUserDetailsService implements UserDetailsService {
 
 		@Override
 		public String getPassword() {
-			return "password";
+			return "user";
 		}
 
 		private String role(String i) {
