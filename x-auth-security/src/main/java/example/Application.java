@@ -11,12 +11,14 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.catalina.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,11 +33,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.GenericFilterBean;
+ 
 
 @ComponentScan
 @EnableAutoConfiguration
@@ -78,6 +86,23 @@ class GreetingController {
 
 }
 
+/**
+ * This controller generates the token that must be 
+ * present in subsequent REST invocations. 
+ */
+@RestController
+class UserTransferController {
+	
+	@RequestMapping(value = "/auth", method = POST)
+	ResponseEntity<UserTransfer> auth(@RequestParam String username, @RequestParam String password) {
+		return null;
+	}
+
+	public static class UserTransfer {
+
+	}
+}
+
 @EnableWebMvcSecurity
 @EnableWebSecurity(debug = false)
 @Configuration
@@ -87,8 +112,9 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.addFilterBefore(new CustomFilter(userDetailsServiceBean()), org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
-		http.authorizeRequests().antMatchers("/" + GreetingController.GREETING_NAME + "/**").hasRole("USER");
+		http.addFilterBefore(new CustomFilter(userDetailsServiceBean()), UsernamePasswordAuthenticationFilter.class);
+		http.authorizeRequests().antMatchers("/" + GreetingController.GREETING_NAME + "/**").hasRole( 
+				CustomUserDetailsService.ROLE_USER);
 	}
 
 	@Override
@@ -141,10 +167,11 @@ class CustomFilter extends GenericFilterBean {
 }
 
 class CustomUserDetailsService implements UserDetailsService {
+	
+	public static final String ROLE_ADMIN = "ADMIN";
+	public static final String ROLE_USER = "USER";
 
-	public static final String ROLE_ADMIN = "ROLE_ADMIN";
-	public static final String ROLE_USER = "ROLE_USER";
-
+	@SuppressWarnings("serial")
 	private UserDetails details = new UserDetails() {
 		private boolean enabled = true;
 
