@@ -41,7 +41,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -178,7 +177,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		CustomFilter customFilter = new CustomFilter(tokenUtils, userDetailsServiceBean());
+		XAuthTokenFilter customFilter = new XAuthTokenFilter(tokenUtils, userDetailsServiceBean());
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
@@ -203,13 +202,13 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 }
 
-class CustomFilter extends GenericFilterBean {
+class XAuthTokenFilter extends GenericFilterBean {
 
 	private UserDetailsService detailsService;
 	private TokenUtils tokenUtils;
 	private String xAuthTokenHeaderName = "x-auth-token";
 
-	public CustomFilter(TokenUtils tokenUtils, UserDetailsService userDetailsService) {
+	public XAuthTokenFilter(TokenUtils tokenUtils, UserDetailsService userDetailsService) {
 		this.detailsService = userDetailsService;
 		this.tokenUtils = tokenUtils;
 	}
