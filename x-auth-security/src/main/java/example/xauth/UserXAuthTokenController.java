@@ -13,11 +13,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
- 
- 
 /**
  * This controller generates the token that must be present in subsequent REST
  * invocations.
@@ -30,12 +29,12 @@ public class UserXAuthTokenController {
 	private final UserDetailsService userDetailsService;
 
 	@Autowired
-	public UserXAuthTokenController(AuthenticationManager am, UserDetailsService userDetailsService ) {
+	public UserXAuthTokenController(AuthenticationManager am, UserDetailsService userDetailsService) {
 		this.authenticationManager = am;
 		this.userDetailsService = userDetailsService;
 	}
 
-	@RequestMapping(value = "/auth")
+	@RequestMapping(value = "/authenticate", method = { RequestMethod.POST })
 	public UserTransfer authorize(@RequestParam String username, @RequestParam String password) {
 
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);

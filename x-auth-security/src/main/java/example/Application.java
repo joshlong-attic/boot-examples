@@ -3,6 +3,9 @@ package example;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -45,8 +48,16 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		
+		http.csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.authorizeRequests().antMatchers("/" + GreetingController.GREETING_NAME + "/**").hasRole(CustomUserDetailsService.ROLE_USER);
+
+		String[] restEndpointsToSecure = { NewsController.NEWS_COLLECTION };
+		for (String endpoint : restEndpointsToSecure) {
+			http.authorizeRequests().antMatchers("/" + endpoint + "/**").hasRole(CustomUserDetailsService.ROLE_USER);
+		}
+		
 		http.apply(new XAuthTokenConfigurer(userDetailsServiceBean()));
 	}
 
@@ -136,34 +147,43 @@ class CustomUserDetailsService implements UserDetailsService {
 	}
 }
 
-// greeting REST service
-class Greeting {
-
-	private String message;
-
-	public Greeting() {
-	}
-
-	public Greeting(String msg) {
-		this.message = msg;
-	}
-
-	public String getMessage() {
-		return this.message;
-	}
-
-	public void setMessage(String m) {
-		this.message = m;
-	}
-}
-
 @RestController
-class GreetingController {
+class NewsController {
+	private Map<Long, NewsEntry> entries = new ConcurrentHashMap<Long, NewsEntry>();
 
-	public static final String GREETING_NAME = "greeting";
+	public static final String NEWS_COLLECTION = "news";
 
-	@RequestMapping("/" + GREETING_NAME + "/{name}")
-	public Greeting greet(@PathVariable String name) {
-		return new Greeting(name);
+	@RequestMapping("/" + NEWS_COLLECTION)
+	public Collection<NewsEntry> entries() {
+		return this.entries.values();
 	}
+
+	@RequestMapping("/" + NEWS_COLLECTION + "/{id}")
+	public NewsEntry entry(@PathVariable Long id) {
+		return this.entries.get(id);
+	}
+
+	public NewsController() {
+		for (long i = 0; i < 5; i++)
+			this.entries.put(i, new NewsEntry(i, "Title #" + i));
+	}
+
+	public static class NewsEntry {
+		private long id;
+		private String content;
+
+		public NewsEntry(long id, String b) {
+			this.id = id;
+			this.content = b;
+		}
+
+		public long getId() {
+			return this.id;
+		}
+
+		public String getContent() {
+			return this.content;
+		}
+	}
+
 }

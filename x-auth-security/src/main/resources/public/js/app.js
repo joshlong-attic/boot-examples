@@ -1,3 +1,6 @@
+
+var xAuthTokenHeaderName = 'x-auth-token';
+
 angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 	.config(
 		[ '$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
@@ -74,10 +77,12 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 			
 			return $rootScope.user.roles[role];
 		};
+
+		
 		
 		$rootScope.logout = function() {
 			delete $rootScope.user;
-			delete $http.defaults.headers.common['X-Auth-Token'];
+			delete $http.defaults.headers.common[xAuthTokenHeaderName];
 			$cookieStore.remove('user');
 			$location.path("/login");
 		};
@@ -88,7 +93,7 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 		var user = $cookieStore.get('user');
 		if (user !== undefined) {
 			$rootScope.user = user;
-			$http.defaults.headers.common['X-Auth-Token'] = user.token;
+			$http.defaults.headers.common[xAuthTokenHeaderName] = user.token;
 			
 			$location.path(originalPath);
 		}
@@ -137,7 +142,7 @@ function LoginController($scope, $rootScope, $location, $http, $cookieStore, Log
 	$scope.login = function() {
 		LoginService.authenticate($.param({username: $scope.username, password: $scope.password}), function(user) {
 			$rootScope.user = user;
-			$http.defaults.headers.common['X-Auth-Token'] = user.token;
+			$http.defaults.headers.common[ xAuthTokenHeaderName ] = user.token;
 			$cookieStore.put('user', user);
 			$location.path("/");
 		});
@@ -149,7 +154,7 @@ var services = angular.module('exampleApp.services', ['ngResource']);
 
 services.factory('LoginService', function($resource) {
 	
-	return $resource('rest/user/:action', {},
+	return $resource(':action', {},
 			{
 				authenticate: {
 					method: 'POST',
@@ -162,5 +167,5 @@ services.factory('LoginService', function($resource) {
 
 services.factory('NewsService', function($resource) {
 	
-	return $resource('rest/news/:id', {id: '@id'});
+	return $resource('news/:id', {id: '@id'});
 });
