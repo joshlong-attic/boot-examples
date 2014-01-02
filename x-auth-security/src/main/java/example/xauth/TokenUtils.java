@@ -5,7 +5,6 @@ import java.security.NoSuchAlgorithmException;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.codec.Hex;
-import org.springframework.stereotype.Component;
 
 class TokenUtils {
 
