@@ -17,7 +17,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 /**
  * sifts through all incoming requests and installs a Spring Security principal
- * if a cookie corresponding to a valid user is found. 
+ * if a header corresponding to a valid user is found. 
  */
 public class XAuthTokenFilter extends GenericFilterBean {
 
