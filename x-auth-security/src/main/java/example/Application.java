@@ -3,8 +3,10 @@ package example;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.boot.SpringApplication;
@@ -48,8 +50,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
-		
+
 		http.csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -57,7 +58,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		for (String endpoint : restEndpointsToSecure) {
 			http.authorizeRequests().antMatchers("/" + endpoint + "/**").hasRole(CustomUserDetailsService.ROLE_USER);
 		}
-		
+
 		http.apply(new XAuthTokenConfigurer(userDetailsServiceBean()));
 	}
 
@@ -85,8 +86,26 @@ class CustomUserDetailsService implements UserDetailsService {
 	public static final String ROLE_USER = "USER";
 
 	@SuppressWarnings("serial")
-	private UserDetails details = new UserDetails() {
+	static class SimpleUserDetails implements UserDetails {
+
+		private String username;
+		private String password;
 		private boolean enabled = true;
+		private Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+
+		public SimpleUserDetails(String username, String pw, String... extraRoles) {
+			this.username = username;
+			this.password = pw;
+
+			// setup roles
+			Set<String> roles = new HashSet<String>();
+			roles.addAll(Arrays.<String> asList(null == extraRoles ? new String[0] : extraRoles));
+
+			// export them as part of authorities
+			for (String r : roles)
+				authorities.add(new SimpleGrantedAuthority(role(r)));
+
+		}
 
 		public String toString() {
 			return "{enabled:" + isEnabled() + ", username:'" + getUsername() + "', password:'" + getPassword() + "'}";
@@ -114,12 +133,12 @@ class CustomUserDetailsService implements UserDetailsService {
 
 		@Override
 		public String getUsername() {
-			return "user";
+			return this.username;
 		}
 
 		@Override
 		public String getPassword() {
-			return "user";
+			return this.password;
 		}
 
 		private String role(String i) {
@@ -128,21 +147,18 @@ class CustomUserDetailsService implements UserDetailsService {
 
 		@Override
 		public Collection<? extends GrantedAuthority> getAuthorities() {
-			Collection<String> roles = Arrays.<String> asList(role(ROLE_USER), role(ROLE_ADMIN));
-			Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-			for (String r : roles) {
-				authorities.add(new SimpleGrantedAuthority(r));
-			}
-			return authorities;
+			return this.authorities;
 		}
+	}
 
-	};
+	private List<UserDetails> details = Arrays.<UserDetails> asList(new SimpleUserDetails("user", "user", ROLE_USER), new SimpleUserDetails("admin", "admin", ROLE_USER, ROLE_ADMIN));
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		if (username.equalsIgnoreCase(this.details.getUsername())) {
-			return this.details;
-		}
+		for (UserDetails details : this.details)
+			if (details.getUsername().equalsIgnoreCase(username))
+				return details;
+
 		return null;
 	}
 }
