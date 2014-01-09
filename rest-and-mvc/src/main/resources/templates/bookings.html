@@ -1,20 +1,40 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="webjars/jquery/2.0.3/jquery.min.js"></script>
+
 </head>
 <body>
 
 <H1> Bookings</H1>
 
+<!--
 <div th:each="booking : ${bookings}">
 
     <div>
-     <b th:text="${booking.id}">ID</b> -
+        <b th:text="${booking.id}">ID</b> -
         <span th:text="${booking.bookingName}">Booking Name</span>
     </div>
 </div>
+-->
+<DIV id="rows"></DIV>
 
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $.ajax({url: '/bookings'})
+                .then(function (bookings) {
+
+                    $(bookings).each(function (indx, booking) {
+                        var cells = '<span class="id">' + booking.id + '</span> <span class="name">' + booking.bookingName + '</span>';
+                        var row = '<div>' + cells + '</div>';
+                        $('#rows').append(row);
+                    });
+                });
+    });
+</script>
 </body>
 </html>
