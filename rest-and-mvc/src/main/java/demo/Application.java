@@ -3,9 +3,6 @@ package demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.SpringBootServletInitializer;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.Column;
@@ -26,36 +22,47 @@ import java.util.Collection;
 
 @ComponentScan
 @EnableAutoConfiguration
-public class Application extends SpringBootServletInitializer {
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
+public class Application {
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext =
-                SpringApplication.run(Application.class, args);
+        SpringApplication.run(Application.class, args);
+    }
+}
 
+@RestController
+class BookingRestController {
+
+    @Autowired
+    BookingRepository bookingRepository;
+
+    @RequestMapping("/bookings")
+    Collection<Booking> bookings() {
+        return this.bookingRepository.findAll();
+    }
+}
+
+@Controller
+class BookingHtmlController {
+
+    @Autowired
+    BookingRepository bookingRepository;
+
+    @RequestMapping("/bookings.html")
+    String bookings(Model model) {
+        model.addAttribute("bookings", this.bookingRepository.findAll());
+        return "bookings";
     }
 }
 
 @Entity
 class Booking {
-    @Id
-    @GeneratedValue
-    private Long id;
 
     @Column(name = "booking_name")
     private String bookingName;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Id
+    @GeneratedValue
+    private long id;
 
     public String getBookingName() {
         return bookingName;
@@ -65,45 +72,25 @@ class Booking {
         this.bookingName = bookingName;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public Booking() {
     }
 
     public Booking(String bookingName) {
-
         this.bookingName = bookingName;
     }
 }
 
-@RestController
-class BookingRestController {
-    @Autowired
-    BookingRepository bookingRepository;
-
-    @RequestMapping("/bookings")
-    Collection<Booking> allBookings() {
-        return bookingRepository.findAll();
-    }
-
-
-}
-
-@Controller
-class BookingMvcController {
-
-    @RequestMapping("/bookings.html")
-    String allBookings(Model model) {
-        model.addAttribute("bookings", bookingRepository.findAll());
-        return "bookings";
-    }
-
-    @Autowired
-    BookingRepository bookingRepository;
-}
 
 interface BookingRepository extends JpaRepository<Booking, Long> {
-    // select b from Booking b where b.bookingName = ?
     Collection<Booking> findByBookingName(@Param("bookingName") String bookingName);
-
 }
 
 
