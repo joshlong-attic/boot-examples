@@ -49,7 +49,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        String[] restEndpointsToSecure = {NewsController.NEWS_COLLECTION};
+        String[] restEndpointsToSecure = { "news"};
         for (String endpoint : restEndpointsToSecure) {
             http.authorizeRequests().antMatchers("/" + endpoint + "/**").hasRole(CustomUserDetailsService.ROLE_USER);
         }
@@ -148,7 +148,7 @@ class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
-    private List<UserDetails> details = Arrays.<UserDetails>asList(new SimpleUserDetails("user", "user", ROLE_USER), new SimpleUserDetails("admin", "admin", ROLE_USER, ROLE_ADMIN));
+    List<UserDetails> details = Arrays.<UserDetails>asList(new SimpleUserDetails("user", "user", ROLE_USER), new SimpleUserDetails("admin", "admin", ROLE_USER, ROLE_ADMIN));
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -162,21 +162,20 @@ class CustomUserDetailsService implements UserDetailsService {
 
 @RestController
 class NewsController {
-    private Map<Long, NewsEntry> entries = new ConcurrentHashMap<Long, NewsEntry>();
 
-    public static final String NEWS_COLLECTION = "news";
+    Map<Long, NewsEntry> entries = new ConcurrentHashMap<Long, NewsEntry>();
 
-    @RequestMapping("/" + NEWS_COLLECTION)
-    public Collection<NewsEntry> entries() {
+    @RequestMapping("/news")
+    Collection<NewsEntry> entries() {
         return this.entries.values();
     }
 
-    @RequestMapping("/" + NEWS_COLLECTION + "/{id}")
-    public NewsEntry entry(@PathVariable Long id) {
+    @RequestMapping("/news/{id}")
+    NewsEntry entry(@PathVariable Long id) {
         return this.entries.get(id);
     }
 
-    public NewsController() {
+    NewsController() {
         for (long i = 0; i < 5; i++)
             this.entries.put(i, new NewsEntry(i, "Title #" + i));
     }
