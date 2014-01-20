@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * This controller generates the token that must be present in subsequent REST
  * invocations.
+ *
+ * @author Philip W. Sorst (philip@sorst.net)
+ * @author Josh Long (josh@joshlong.com)
  */
 @RestController
 public class UserXAuthTokenController {
