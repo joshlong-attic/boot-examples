@@ -1,2 +1,3 @@
-insert into customer(first_name,last_name) values('josh','long');
-insert into customer(first_name,last_name) values('rod','johnson');
+insert into customer(first_name,last_name) values('Joonas Lehtinen','Lehtinen');
+insert into customer(first_name,last_name) values('Petter','Holmström');
+insert into customer(first_name,last_name) values('Josh','Long');
