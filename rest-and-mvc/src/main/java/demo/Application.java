@@ -8,6 +8,7 @@ import org.springframework.boot.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.stereotype.Controller;
@@ -32,22 +33,15 @@ import java.util.Collection;
  * subclass and so can be deployed into a traditional Servlet 3 container (Apache Tomcat 7, Jetty 9, JBoss AS 6, etc.)
  * and run from there, as well.
  */
-@Configuration
-@EnableSpringDataWebSupport
-@EnableTransactionManagement
+@EnableJpaRepositories
 @ComponentScan
 @EnableAutoConfiguration
-public class Application extends SpringBootServletInitializer {
+public class Application   {
 
     private static Class<Application> entryPointClass = Application.class;
 
     public static void main(String[] args) {
         SpringApplication.run(entryPointClass, args);
-    }
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(entryPointClass);
     }
 }
 
