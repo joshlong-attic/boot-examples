@@ -21,9 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.DefaultSecurityFilterChain;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -170,9 +168,28 @@ class NewsController {
         return this.entries.values();
     }
 
-    @RequestMapping("/news/{id}")
+    @RequestMapping(value = "/news/{id}", method = RequestMethod.DELETE)
+    NewsEntry remove(@PathVariable Long id) {
+        return this.entries.remove(id);
+    }
+
+    @RequestMapping(value = "/news/{id}", method = RequestMethod.GET)
     NewsEntry entry(@PathVariable Long id) {
         return this.entries.get(id);
+    }
+
+    @RequestMapping(value = "/news/{id}", method = RequestMethod.POST)
+    NewsEntry update(@RequestBody NewsEntry news) {
+        this.entries.put(news.getId(), news);
+        return news;
+    }
+
+    @RequestMapping(value = "/news", method = RequestMethod.POST)
+    NewsEntry add(@RequestBody NewsEntry news) {
+        long id = 10 + new Random().nextInt(99);
+        news.setId(id);
+        this.entries.put(id, news);
+        return news;
     }
 
     NewsController() {
@@ -183,6 +200,8 @@ class NewsController {
     public static class NewsEntry {
         private long id;
         private String content;
+
+        public NewsEntry() {}
 
         public NewsEntry(long id, String b) {
             this.id = id;
@@ -195,6 +214,14 @@ class NewsController {
 
         public String getContent() {
             return this.content;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
         }
     }
 
