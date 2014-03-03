@@ -8,11 +8,16 @@
         <artifactId>core</artifactId>
         <version>1.0.0.RC3</version>
     </parent>
-     <artifactId>vaadin</artifactId>
+    <artifactId>vaadin</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.8.3</version>
         </dependency>
         <dependency>
             <groupId>org.vaadin.spring</groupId>
@@ -46,11 +51,21 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.2.1</version>
+        </dependency>
     </dependencies>
 
     <properties>
-         <vaadin.version>7.1.10</vaadin.version>
-      </properties>
+        <vaadin.version>7.1.10</vaadin.version>
+    </properties>
 
     <build>
         <plugins>
