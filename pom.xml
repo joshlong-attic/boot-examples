@@ -7,27 +7,19 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.0.0.RC3</version>
-    </parent> 
-		<packaging>pom</packaging>
-		<groupId>bootexamples</groupId>
+    </parent>
+    <packaging>pom</packaging>
+    <groupId>bootexamples</groupId>
     <artifactId>core</artifactId>
     <modules>
-			<module>rest-and-mvc</module>
-			<module>jersey</module>			
-			<module>vaadin</module>						
-			<module>x-auth-security</module>									
-		</modules>
+        <module>rest-and-mvc</module>
+        <module>jersey</module>
+        <module>velocity</module>
+        <module>vaadin</module>
+        <module>x-auth-security</module>
+    </modules>
 
-   
-    <build>
-        <plugins>
-            <plugin>
 
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
     <repositories>
         <repository>

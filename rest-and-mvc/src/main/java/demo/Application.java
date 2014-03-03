@@ -4,22 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.SpringBootServletInitializer;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,19 +25,24 @@ import java.util.Collection;
  * The {@link #main(String[])} method is an entry point and can be used to start the entire application, including
  * an embedded Tomcat instance.
  * <p/>
- * However, this class is also a {@link org.springframework.boot.web.SpringBootServletInitializer SpringBootServletInitializer}
+ * However, this class is also a {@link org.springframework.boot.context.web.SpringBootServletInitializer SpringBootServletInitializer}
  * subclass and so can be deployed into a traditional Servlet 3 container (Apache Tomcat 7, Jetty 9, JBoss AS 6, etc.)
  * and run from there, as well.
  */
 @EnableJpaRepositories
 @ComponentScan
 @EnableAutoConfiguration
-public class Application   {
+public class Application extends SpringBootServletInitializer {
 
     private static Class<Application> entryPointClass = Application.class;
 
     public static void main(String[] args) {
         SpringApplication.run(entryPointClass, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(entryPointClass);
     }
 }
 
@@ -52,31 +53,29 @@ public class Application   {
 @Entity
 class Booking {
 
-    @Column(name = "booking_name")
     private String bookingName;
 
     @Id
     @GeneratedValue
-    @Column(name = "booking_id")
     private long id;
 
     public String getBookingName() {
         return bookingName;
     }
 
-    public void setBookingName(String bookingName) {
-        this.bookingName = bookingName;
-    }
-
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    Booking() {
     }
 
-    public Booking() {
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "bookingName='" + bookingName + '\'' +
+                ", id=" + id +
+                '}';
     }
 
     public Booking(String bookingName) {
