@@ -11,6 +11,11 @@
     <packaging>pom</packaging>
     <groupId>bootexamples</groupId>
     <artifactId>core</artifactId>
+
+    <properties>
+        <java.version>1.7</java.version>
+    </properties>
+
     <modules>
         <module>rest-and-mvc</module>
         <module>jersey</module>

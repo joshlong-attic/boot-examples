@@ -4,12 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>bootexamples</groupId>
+        <artifactId>core</artifactId>
         <version>1.0.0.RC3</version>
     </parent>
-    <groupId>bootexamples</groupId>
-    <artifactId>vaadin</artifactId>
+     <artifactId>vaadin</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -50,11 +49,8 @@
     </dependencies>
 
     <properties>
-        <servlet-api.version>3.1.0</servlet-api.version>
-        <vaadin.version>7.1.10</vaadin.version>
-        <start-class>demo.Application</start-class>
-        <java.version>1.7</java.version>
-    </properties>
+         <vaadin.version>7.1.10</vaadin.version>
+      </properties>
 
     <build>
         <plugins>
@@ -65,41 +61,5 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>http://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>http://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>http://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>http://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>

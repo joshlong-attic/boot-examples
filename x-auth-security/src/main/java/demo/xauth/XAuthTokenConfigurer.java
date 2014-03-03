@@ -1,4 +1,4 @@
-package example.xauth;
+package demo.xauth;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

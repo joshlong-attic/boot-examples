@@ -1,4 +1,4 @@
-package example.xauth;
+package demo.xauth;
 
 import java.util.HashMap;
 import java.util.Map;

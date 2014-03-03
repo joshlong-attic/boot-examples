@@ -29,7 +29,7 @@ import java.util.Collection;
  * subclass and so can be deployed into a traditional Servlet 3 container (Apache Tomcat 7, Jetty 9, JBoss AS 6, etc.)
  * and run from there, as well.
  */
-@EnableJpaRepositories
+
 @ComponentScan
 @EnableAutoConfiguration
 public class Application extends SpringBootServletInitializer {

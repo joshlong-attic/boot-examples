@@ -1,4 +1,4 @@
-package example.xauth;
+package demo.xauth;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.codec.Hex;
