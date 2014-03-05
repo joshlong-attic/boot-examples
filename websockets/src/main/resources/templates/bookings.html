@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/standard">
+<head>
+    <title>
+        Reservations
+    </title>
+
+</head>
+<body>
+
+<h1> You shouldn't see this!</h1>
+
+
+
+    <div layout:fragment="content" ng-controller="BookingController">
+
+        <H1> Reservations</H1>
+
+        <div class="bookings-header">
+            <span class="id">ID</span>
+            <span class="bookingName">Booking Name</span>
+            <span class="dateAndTime">When</span>
+            <span class="groupSize">Group Count</span>
+            <span></span>
+        </div>
+        <div class="booking-rows" ng-repeat="r in bookings">
+
+            <div class="booking-row" id="booking-row-{{ r.id }}">
+                <span class="id">  {{ r.id }} </span>
+                <span class="bookingName"> {{ r.bookingName }} </span>
+                <span class="dateAndTime">   {{ r.dateAndTime  | date:'yyyy-MM-dd HH:mm:ss Z' }}   </span>
+                <span class="groupSize">{{ r.groupSize}} </span>
+                <span> <span style="font-size: smaller">  <a ng-click="repeat( r )" href="#">repeat</a> </span> </span>
+            </div>
+        </div>
+
+    </div>
+
+<div layout:fragment="scripts">
+    <script src="js/app.js"></script>
+</div>
+
+</body>
+</html>
+

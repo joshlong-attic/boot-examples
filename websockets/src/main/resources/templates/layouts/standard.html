@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html ng-app="reservations" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">
+        Spring Bookings
+    </title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="webjars/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <style type="text/css">
+        .bookingName,
+        .groupSize,
+        .dateAndTime,
+        .id,
+        .column {
+            display: inline-block;
+            margin-right: 10px;
+            width: 100px;
+        }
+        .bookings-header .id,
+        .bookings-header .dateAndTime,
+        .bookings-header .groupSize,
+        .bookings-header .bookingName {
+            color: dodgerblue;
+        }
+
+        .id {
+            width: 50px;
+            font-weight: bold;
+            color: lightslategray;
+        }
+        .dateAndTime {
+            width: 200px;;
+        }
+    </style>
+</head>
+<body class="container">
+
+
+<div layout:fragment="content">
+
+
+    <!--
+        Render contributed page content
+    -->
+
+</div>
+
+
+<script src="webjars/jquery/2.0.3/jquery.js"></script>
+<script src="webjars/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+<script src="webjars/angularjs/1.2.3/angular.js"></script>
+<script src="webjars/angularjs/1.2.3/angular-resource.js"></script>
+<script src="webjars/angularjs/1.2.3/angular-route.js"></script>
+<script src="webjars/angularjs/1.2.3/angular-cookies.js"></script>
+
+
+<!-- load the bits we need for websockets now
+-->
+<script src="webjars/sockjs-client/0.3.4/sockjs.js"></script>
+<script src="webjars/stomp-websocket/2.3.0/stomp.js"></script>
+
+
+<span layout:fragment="scripts">
+    <!--
+        contribute script tags to the document
+    -->
+</span>
+
+
+</body>
+</html>
+

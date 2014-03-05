@@ -20,6 +20,7 @@
         <module>rest-and-mvc</module>
         <module>jersey</module>
         <module>velocity</module>
+        <module>websockets</module>
         <module>vaadin</module>
         <module>x-auth-security</module>
     </modules>
