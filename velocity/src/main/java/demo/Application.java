@@ -1,22 +1,23 @@
 package demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
-import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.util.*;
 
 
 @ComponentScan
@@ -33,59 +34,112 @@ public class Application extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(entryPointClass);
     }
+
 }
 
-@Configuration
-@EnableWebMvc
-class VelocityMvcConfiguration {
-
-    @Bean
-    VelocityConfigurer velocityConfig() {
-        return new VelocityConfigurer();
-    }
-
-    @Bean
-    ViewResolver viewResolver() {
-        VelocityViewResolver resolver = new VelocityViewResolver();
-        resolver.setPrefix("/templates/");
-        resolver.setSuffix(".vm");
-        return resolver;
-    }
-}
-
+/**
+ * Represents one (very under-specified) <em>booking</em>
+ * for a named person at a theoretical establishment like a restaurant.
+ */
+@Entity
 class Booking {
-    public Booking(long i, String n) {
-        this.id = i;
-        this.name = n;
-    }
 
-    private String name;
+    private String bookingName;
+
+    @Id
+    @GeneratedValue
     private long id;
 
-    public String getName() {
-        return name;
+
+    Booking() {
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "bookingName='" + bookingName + '\'' +
+                ", id=" + id +
+                '}';
+    }
+
+    public String getBookingName() {
+        return bookingName;
+    }
+
+    public void setBookingName(String bookingName) {
+        this.bookingName = bookingName;
     }
 
     public long getId() {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Booking(String bookingName) {
+        this.bookingName = bookingName;
+    }
 }
 
-@Controller
-class BookingMvcController {
+/**
+ * Spring Data JPA-powered <em>repository</em> interface.
+ * Supports common operations like {@link #findAll()} and {@link #save(Object)} against JPA entities.
+ * This particular repository deals in {@link demo.Booking booking} objects.
+ */
+interface BookingRepository extends JpaRepository<Booking, Long> {
+    Collection<Booking> findByBookingName(String bookingName);
+}
 
-    private static List<Booking> bookings(int count) {
-        List<Booking> bookings = new ArrayList<Booking>();
-        for (int i = 0; i < count; i++)
-            bookings.add(new Booking(i, "Booking #" + i));
-        return bookings;
+/**
+ * Handles REST-API calls for {@link demo.Booking booking data}.
+ */
+@RestController
+@RequestMapping("/bookings")
+class BookingRestController {
+
+    @Autowired
+    BookingRepository bookingRepository;
+
+    @RequestMapping(method = RequestMethod.POST)
+    Booking add(@RequestBody Booking b) {
+        return this.bookingRepository.save(b);
     }
 
-    @RequestMapping("/bookings.html")
-    String allBookings(Model model) {
-        model.addAttribute("bookings", bookings(4));
+    @RequestMapping(method = RequestMethod.GET)
+    Collection<Booking> all() {
+        return this.bookingRepository.findAll();
+    }
+}
+
+/**
+ * Handles the Thymeleaf-powered view responses.
+ */
+@Controller
+class BookingHtmlController {
+
+    @Autowired
+    BookingRepository bookingRepository;
+
+    Map<String, Object> mapForProperties(Booking b) {
+        Map<String, Object> stringObjectMap = new HashMap<>();
+        stringObjectMap.put("id", b.getId());
+        stringObjectMap.put("bookingName", b.getBookingName());
+        return stringObjectMap;
+    }
+
+    List<Map<String, Object>> mapList(List<Booking> bookingList) {
+        List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
+        for (Booking b : bookingList)
+            maps.add(mapForProperties(b));
+        return maps;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/bookings.html")
+    String all(Model model) {
+        model.addAttribute("bookings", mapList(
+                this.bookingRepository.findAll()));
         return "bookings";
     }
-
 }

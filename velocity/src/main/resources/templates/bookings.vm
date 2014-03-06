@@ -1,12 +1,49 @@
-<html>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+        >
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="webjars/jquery/2.0.3/jquery.min.js"></script>
 
-<title>
-    Hello, world
-</title>
-
+</head>
 <body>
 
-    there are  $bookings.size() bookings.
+<H1> Showing  $bookings.size()   Bookings</H1>
 
+<!--
+ renders the contents of the <code>bookings</code> model attribute
+ server-side with Thymeleaf's <code>each</code> attribute.
+-->
+<h1> Thymeleaf Template Generation
+</h1>
+
+#foreach( $booking in $bookings )
+    <div>
+        <b> $booking.id </b>
+        <span> $booking.bookingName </span>
+    </div>
+#end
+
+
+
+<h1> JQuery-powered Ajax rendering
+</h1>
+
+<DIV id="rows"></DIV>
+
+<script type="text/javascript">
+
+    // renders the contents of the <code>bookings</code> endpoint using jQuery and some Ajax.
+    $(document).ready(function () {
+        $.ajax({url: '/bookings'}).then(function (bookings) {
+            $(bookings).each(function (indx, booking) {
+                var cells = '<span class="id">' + booking.id + '</span> <span class="name">' + booking.bookingName + '</span>';
+                var row = '<div>' + cells + '</div>';
+                $('#rows').append(row);
+            });
+        });
+    });
+</script>
 </body>
 </html>

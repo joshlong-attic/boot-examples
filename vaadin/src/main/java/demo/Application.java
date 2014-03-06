@@ -55,13 +55,6 @@ class RootUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         getPage().setTitle("Root UI");
 
-        ImmutableMap<String, String> headers =
-                ImmutableMap.<String, String>builder()
-                        .put("firstName", "First Name")
-                        .put("lastName", "Last Name")
-                        .put("id", "ID")
-                        .build();
-
         Table table = new Table("Customer Table");
 
         table.addContainerProperty("firstName", String.class, null);
