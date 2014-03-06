@@ -13,24 +13,35 @@
 
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>sockjs-client</artifactId>
+            <version>0.3.4</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>stomp-websocket</artifactId>
+            <version>2.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf</groupId>
@@ -41,19 +52,46 @@
             <artifactId>jquery</artifactId>
             <version>2.0.3-1</version>
         </dependency>
+<!--        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>2.0.3-1</version>
+        </dependency>-->
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
         </dependency>
-        <dependency>
+      <!--  <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>angularjs</artifactId>
             <version>1.2.3</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.webjars</groupId>
+            <artifactId>angular-strap</artifactId>
+            <version>2.0.1-rc.3-1</version>
+         </dependency>
+       <!-- <dependency>
+            <groupId>org.webjars</groupId>
+            <version>3.0.2</version>
             <artifactId>bootstrap</artifactId>
-        </dependency>
+        </dependency>-->
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>angularjs</artifactId>
+            <version>1.2.13</version>
+        </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>3.1.1</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
 </project>

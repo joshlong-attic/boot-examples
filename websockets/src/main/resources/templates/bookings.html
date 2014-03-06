@@ -13,33 +13,135 @@
 <h1> You shouldn't see this!</h1>
 
 
+<div layout:fragment="content" ng-controller="BookingController">
 
-    <div layout:fragment="content" ng-controller="BookingController">
+    <H1> Reservations</H1>
 
-        <H1> Reservations</H1>
-
-        <div class="bookings-header">
-            <span class="id">ID</span>
-            <span class="bookingName">Booking Name</span>
-            <span class="dateAndTime">When</span>
-            <span class="groupSize">Group Count</span>
-            <span></span>
-        </div>
-        <div class="booking-rows" ng-repeat="r in bookings">
-
-            <div class="booking-row" id="booking-row-{{ r.id }}">
-                <span class="id">  {{ r.id }} </span>
-                <span class="bookingName"> {{ r.bookingName }} </span>
-                <span class="dateAndTime">   {{ r.dateAndTime  | date:'yyyy-MM-dd HH:mm:ss Z' }}   </span>
-                <span class="groupSize">{{ r.groupSize}} </span>
-                <span> <span style="font-size: smaller">  <a ng-click="repeat( r )" href="#">repeat</a> </span> </span>
-            </div>
-        </div>
-
+    <div class="bookings-header">
+        <span class="id">ID</span>
+        <span class="bookingName">Booking Name</span>
+        <span class="dateAndTime">When</span>
+        <span class="groupSize">Group Count</span>
+        <span class="buttons"></span>
     </div>
 
+    <div  class="booking-rows" ng-repeat="r in bookings">
+
+        <div  class="booking-row  " id="booking-row-{{ r.id }}">
+            <span class="id">  {{ r.id }} </span>
+            <span class="bookingName"> {{ r.bookingName }} </span>
+            <span class="dateAndTime">   {{ r.dateAndTime  | date:'yyyy-MM-dd HH:mm:ss Z' }}   </span>
+            <span class="groupSize">{{ r.groupSize}} </span>
+            <span class="buttons">
+                  <button type="submit" ng-click="deleteBooking( r )" class="btn btn-default">Delete Reservation
+                  </button>
+            </span>
+            <span>
+                <span class="due" ng-show="pastDue( r )">
+                    PAST DUE
+                </span>
+
+
+            </span>
+        </div>
+    </div>
+
+
+    <!-- new booking form !-->
+
+    <div name="bookingForm" id="new-booking">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="bookingName" class="col-sm-3 control-label"> Name</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="bookingName"  ng-model="booking.bookingName"  placeholder="Name"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="groupSize" class="col-sm-3 control-label"> Group Size</label>
+
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" id="groupSize"   ng-model="booking.groupSize" placeholder="Group Size"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label"><i class="fa fa-calendar"></i>
+                    When
+                </label>
+
+                <div class="col-sm-8">
+                    <input type="text" width="100"
+                           class="form-control datetime"
+                           ng-model="booking.dateAndTime"
+                           data-autoclose="1"
+                           placeholder="Date"
+                           bs-datepicker="true"/>
+
+                    <input type="text"
+                           class="form-control datetime"
+                           ng-model="booking.dateAndTime"
+                           data-autoclose="1"
+                           placeholder="Time"
+                           bs-timepicker="true"/>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-8">
+                    <button type="submit" ng-disabled="bookingForm.$invalid" ng-click="newBooking()" class="btn btn-default">Make Reservation
+                    </button>
+                    <button type="submit" ng-click="cancelBooking()" class="btn btn-default">Cancel
+                </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+
+</div>
+
 <div layout:fragment="scripts">
+
+
     <script src="js/app.js"></script>
+    <style type="text/css">
+        .datetime {
+            width: 100px;
+            display: inline-block;
+        }
+
+        .booking-row {
+
+            padding-top: 10px;
+            border: 0 solid black;
+            border-top : 1px solid lightgrey ;
+            padding-bottom:   0px;
+            margin-top: 10px ;
+        }
+
+
+        .due {
+            color: red ;
+            margin-left: 10px ;
+            text-transform: uppercase;
+            font-size: smaller;
+            font-family: "arial black" ,arial,sans-serif;
+        }
+
+        #new-booking {
+
+            border: 1px solid lightgrey;
+            padding: 10px;
+
+            margin-top: 10px ;
+
+
+        }
+    </style>
 </div>
 
 </body>

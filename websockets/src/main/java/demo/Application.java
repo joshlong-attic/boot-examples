@@ -1,5 +1,6 @@
 package demo;
 
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
@@ -7,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -18,8 +20,8 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -105,10 +107,6 @@ class Booking {
         return groupSize;
     }
 
-    public void setDateAndTime(Date dateAndTime) {
-        this.dateAndTime = dateAndTime;
-    }
-
     public Date getDateAndTime() {
         return dateAndTime;
     }
@@ -139,44 +137,58 @@ interface BookingRepository extends JpaRepository<Booking, Long> {
 @RestController
 @RequestMapping("/bookings")
 class BookingRestController {
+
     private SimpMessageSendingOperations messagingTemplate;
+
     private TaskScheduler taskScheduler;
 
+    private BookingRepository bookingRepository;
+
     @Autowired
-    BookingRestController(@Qualifier("reservationPool") TaskScheduler taskScheduler, BookingRepository bookingRepository, SimpMessageSendingOperations messagingTemplate) {
+    BookingRestController(
+            @Qualifier("reservationPool") TaskScheduler taskScheduler,
+            BookingRepository bookingRepository,
+            SimpMessageSendingOperations messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
         this.taskScheduler = (taskScheduler);
         this.bookingRepository = bookingRepository;
     }
 
-
-    @Transactional
-    @RequestMapping(method = RequestMethod.POST, value = "/{id}")
-    void schedule(@PathVariable Long id, @RequestBody final Booking booking) {
-
-        this.bookingRepository.save(booking);
+    void schedule(final Booking booking) {
+        Assert.notNull(booking.getDateAndTime());
         this.taskScheduler.schedule(new Runnable() {
             @Override
             public void run() {
                 messagingTemplate.convertAndSend("/topic/alarms", booking);
             }
         }, booking.getDateAndTime());
-
-        System.out.println( "at " +new Date(System.currentTimeMillis()) + "# scheduling " + booking.getId() + " for "  +booking.getDateAndTime());
-
+        LogFactory.getLog(getClass()).info("at " + new Date(
+                System.currentTimeMillis()) + "# scheduling "
+                + booking.getId() + " for " + booking.getDateAndTime());
     }
 
-    @Autowired
-    BookingRepository bookingRepository;
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+    void delete(@PathVariable Long id) {
+        this.bookingRepository.delete(id);
+        reservationEvents("delete#" + id);
+    }
+
+    protected void reservationEvents(String event) {
+        messagingTemplate.convertAndSend("/topic/reservationEvents", event);
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     Booking add(@RequestBody Booking b) {
-        return this.bookingRepository.save(b);
+        Booking result = this.bookingRepository.save(b);
+        schedule(b);
+        reservationEvents("add#" + b.getId());
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     Collection<Booking> all() {
-        return this.bookingRepository.findAll();
+        return this.bookingRepository.findAll(
+                new Sort(Sort.Direction.ASC, "dateAndTime"));
     }
 }
 
