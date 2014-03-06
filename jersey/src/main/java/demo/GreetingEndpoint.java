@@ -1,24 +1,14 @@
 package demo;
 
-import jersey.repackaged.com.google.common.collect.Maps;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import java.util.Map;
+import javax.ws.rs.Produces;
 
 @Path("/greetings")
 public class GreetingEndpoint {
-    /*@GET
-    public Map<String,Object> message() {
-        Map<String,Object>  stringObjectMap =
-                Maps.newHashMapWithExpectedSize(1) ;
-        stringObjectMap.put("message", "Hello, from Jersey!");
-        return stringObjectMap;
-
-        //return "Hello World from a Jersey-powered endpoint";
-    }*/
-
-    @GET public Message message (){
+    @Produces({"application/json", "application/xml"})
+    @GET
+    public Message message() {
         return new Message("Hello world from a Jersey-powered endpoint!");
     }
 }
