@@ -54,10 +54,6 @@ public class Application extends SpringBootServletInitializer {
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 class VelocityConfiguration implements EnvironmentAware {
 
-    public static final String DEFAULT_PREFIX = "/templates/";
-
-    public static final String DEFAULT_SUFFIX = ".vm";
-
     private RelaxedPropertyResolver environment;
 
     @Override
@@ -74,8 +70,8 @@ class VelocityConfiguration implements EnvironmentAware {
     @Bean
     VelocityViewResolver velocityViewResolver() {
         VelocityViewResolver resolver = new VelocityViewResolver();
-        resolver.setSuffix(this.environment.getProperty("suffix", DEFAULT_SUFFIX));
-        resolver.setPrefix(this.environment.getProperty("prefix", DEFAULT_PREFIX));
+        resolver.setSuffix(this.environment.getProperty("suffix", ".vm"));
+        resolver.setPrefix(this.environment.getProperty("prefix", "/templates/"));
         // Needs to come before any fallback resolver (e.g. a
         // InternalResourceViewResolver)
         resolver.setOrder(Ordered.LOWEST_PRECEDENCE - 20);
