@@ -52,7 +52,7 @@ public class Application extends SpringBootServletInitializer {
 @Configuration
 @ConditionalOnClass({Servlet.class})
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
-class VelocityAutoConfiguration implements EnvironmentAware {
+class VelocityConfiguration implements EnvironmentAware {
 
     public static final String DEFAULT_PREFIX = "/templates/";
 
@@ -80,7 +80,6 @@ class VelocityAutoConfiguration implements EnvironmentAware {
         // InternalResourceViewResolver)
         resolver.setOrder(Ordered.LOWEST_PRECEDENCE - 20);
         return resolver;
-
     }
 }
 
