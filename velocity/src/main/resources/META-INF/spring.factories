@@ -1,4 +1,0 @@
-
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-autoconfigure.velocity.VelocityAutoConfiguration
