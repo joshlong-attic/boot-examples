@@ -25,7 +25,7 @@ import static com.google.common.collect.Lists.newArrayList;
 @ComponentScan(basePackages = "com.mangofactory.swagger")
 public class SwaggerConfig {
 
-    public static final List<String> DEFAULT_INCLUDE_PATTERNS = Arrays.asList("/news/.*");
+    public static final List<String> DEFAULT_INCLUDE_PATTERNS = Arrays.asList("/.*");
     public static final String SWAGGER_GROUP = "mobile-api";
 
     @Value("${app.docs}")

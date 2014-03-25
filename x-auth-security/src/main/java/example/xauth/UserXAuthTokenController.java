@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Josh Long (josh@joshlong.com)
  */
 @RestController
+@Api("user")
 public class UserXAuthTokenController {
 
 	private final TokenUtils tokenUtils = new TokenUtils();
@@ -38,6 +41,7 @@ public class UserXAuthTokenController {
 	}
 
 	@RequestMapping(value = "/authenticate", method = { RequestMethod.POST })
+    @ApiOperation(value = "authenticate")
 	public UserTransfer authorize(@RequestParam String username, @RequestParam String password) {
 
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
