@@ -1,4 +1,4 @@
-package example.xauth;
+package example.config;
 
 import com.mangofactory.swagger.core.SwaggerPathProvider;
 import org.springframework.beans.factory.annotation.Autowired;

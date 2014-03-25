@@ -1,4 +1,4 @@
-package example.xauth;
+package example.config;
 
 import com.mangofactory.swagger.configuration.JacksonScalaSupport;
 import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
