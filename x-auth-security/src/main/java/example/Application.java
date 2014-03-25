@@ -1,5 +1,9 @@
 package example;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
+import com.wordnik.swagger.annotations.ApiOperation;
 import example.xauth.XAuthTokenConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -23,6 +27,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -159,33 +165,39 @@ class CustomUserDetailsService implements UserDetailsService {
 }
 
 @RestController
+@Api(value = "news", description = "News API")
 class NewsController {
 
     Map<Long, NewsEntry> entries = new ConcurrentHashMap<Long, NewsEntry>();
 
-    @RequestMapping("/news")
+    @RequestMapping(value = "/news", method = RequestMethod.GET)
+    @ApiOperation(value = "Get News", notes = "Returns news items")
     Collection<NewsEntry> entries() {
         return this.entries.values();
     }
 
     @RequestMapping(value = "/news/{id}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "Delete News item", notes = "Deletes news item by id")
     NewsEntry remove(@PathVariable Long id) {
         return this.entries.remove(id);
     }
 
     @RequestMapping(value = "/news/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "Get a news item", notes = "Returns a news item")
     NewsEntry entry(@PathVariable Long id) {
         return this.entries.get(id);
     }
 
     @RequestMapping(value = "/news/{id}", method = RequestMethod.POST)
-    NewsEntry update(@RequestBody NewsEntry news) {
+    @ApiOperation(value = "Update News", notes = "Updates a news item")
+    NewsEntry update(@Valid @RequestBody NewsEntry news) {
         this.entries.put(news.getId(), news);
         return news;
     }
 
     @RequestMapping(value = "/news", method = RequestMethod.POST)
-    NewsEntry add(@RequestBody NewsEntry news) {
+    @ApiOperation(value = "Create News", notes = "Creates a news item")
+    NewsEntry add(@Valid @RequestBody NewsEntry news) {
         long id = 10 + new Random().nextInt(99);
         news.setId(id);
         this.entries.put(id, news);
@@ -197,8 +209,11 @@ class NewsController {
             this.entries.put(i, new NewsEntry(i, "Title #" + i));
     }
 
+    @ApiModel("News Entry")
     public static class NewsEntry {
+        @ApiModelProperty(value = "the id of the item", required = true)
         private long id;
+        @NotNull
         private String content;
 
         public NewsEntry() {}
