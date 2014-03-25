@@ -9,7 +9,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.0.0.RC3</version>
+        <version>1.0.0.RC5</version>
     </parent>
     <properties>
         <spring-security.version>3.2.1.RELEASE</spring-security.version>
@@ -41,11 +41,9 @@
                 <artifactId>angularjs</artifactId>
                 <version>1.2.13</version>
             </dependency>
-          
         </dependencies>
     </dependencyManagement>
     <dependencies>
-     
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
@@ -66,7 +64,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-      
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
