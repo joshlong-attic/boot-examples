@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.0.0.RC4</version>
+        <version>1.0.0.RELEASE</version>
     </parent>
     <packaging>pom</packaging>
     <groupId>bootexamples</groupId>
