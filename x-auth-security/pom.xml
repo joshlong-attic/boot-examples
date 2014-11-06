@@ -8,7 +8,7 @@
     <parent>
         <groupId>bootexamples</groupId>
         <artifactId>core</artifactId>
-        <version>1.0.0.RC4</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
 
@@ -18,14 +18,19 @@
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-framework-bom</artifactId>
-            <version>${spring.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
