@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <groupId>bootexamples</groupId>
     <artifactId>core</artifactId>
+    <version>1.0.0.RC4</version>
 
     <properties>
         <java.version>1.7</java.version>
@@ -83,10 +84,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
-<<<<<<< HEAD
-    <version>1.0.0.RC4</version>
 </project>
-=======
-</project>
->>>>>>> b9f2c84dd3fe11d6f37cead4a448294b3aeda653
