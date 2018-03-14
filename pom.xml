@@ -72,4 +72,5 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <version>1.0.0.RC4</version>
 </project>
