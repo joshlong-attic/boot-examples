@@ -1,13 +1,8 @@
 package demo;
 
-import com.google.gwt.thirdparty.guava.common.base.Predicate;
-import com.google.gwt.thirdparty.guava.common.collect.Collections2;
-import com.google.gwt.thirdparty.guava.common.collect.ImmutableMap;
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -15,16 +10,11 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.vaadin.spring.VaadinUI;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 import java.util.*;
 
 
@@ -45,10 +35,15 @@ public class Application extends SpringBootServletInitializer {
 }
 
 
-@VaadinUI
+//@VaadinUI
+@org.vaadin.spring.annotation.VaadinUI
 class RootUI extends UI {
 
-    @Autowired
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Autowired
     CustomerRepository customerRepository;
 
     @Override

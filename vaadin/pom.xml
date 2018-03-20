@@ -21,7 +21,8 @@
         </dependency>
         <dependency>
             <groupId>org.vaadin.spring</groupId>
-            <version>1.0-SNAPSHOT</version>
+            <!-- <version>1.0-SNAPSHOT</version> -->
+             <version>0.0.5.RELEASE</version>
             <artifactId>spring-boot-vaadin</artifactId>
         </dependency>
         <dependency>

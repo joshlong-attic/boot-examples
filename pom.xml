@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <groupId>bootexamples</groupId>
     <artifactId>core</artifactId>
+    <version>1.0.0.RC4</version>
 
     <properties>
         <java.version>1.7</java.version>
@@ -52,6 +53,18 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+  <!--<repository>
+    <id>com.springsource.repository.bundles.release</id>
+    <name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+    <url>http://repository.springsource.com/maven/bundles/release</url>
+</repository>
+<repository>
+    <id>com.springsource.repository.bundles.external</id>
+    <name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+    <url>http://repository.springsource.com/maven/bundles/external</url>
+</repository>-->    
+             
+             
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -71,5 +84,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
